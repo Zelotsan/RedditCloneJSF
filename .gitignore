@@ -1,0 +1,6 @@
+*.class
+*.log
+*.settings
+/bin/
+/.idea/
+*.orig
