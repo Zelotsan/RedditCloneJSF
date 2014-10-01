@@ -18,6 +18,7 @@ public class HelloWorld extends HttpServlet {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
 		out.write("<h1>");
 		out.write("Hello World");
 		out.write("</h1>");
