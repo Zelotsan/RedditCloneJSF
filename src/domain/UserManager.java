@@ -31,7 +31,9 @@ public class UserManager {
 		if (users.get(user.getUsername()) != null) {
 			throw new UserException();
 		}
-		
+		if (users.containsKey(user.getUsername())) {
+			throw new UserException("Username already exists. Choose a different one!");
+		}
 		if (user.checkEntries()) {
 			users.put(user.getUsername(), user);
 			save();
