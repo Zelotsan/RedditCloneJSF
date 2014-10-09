@@ -1,9 +1,8 @@
 package domain;
 
 public class UserException extends Exception {
+	private static final long serialVersionUID = 6363870950825598528L;
 
-	private static final long serialVersionUID = 1L;
-	
 	public UserException(String message) {
 		super(message);
 	}
@@ -11,5 +10,4 @@ public class UserException extends Exception {
 	public UserException() {
 		super();
 	}
-
 }

@@ -3,10 +3,13 @@ package domain;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.Properties;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -15,14 +18,39 @@ import javax.servlet.http.HttpSession;
 public class UserManager implements Serializable {
 	private static final long serialVersionUID = 709188204922858134L;
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
+	
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userFilename = "/Volumes/HDD/dmh/Downloads/feed.ser";
-	protected File userFile;
+	protected String userManagerFilename = "/Volumes/HDD/dmh/Downloads/usermanager.ser";
+	protected File userManagerFile;
 	private boolean loggedIn = false;
 	protected boolean isRegistering = false;
 	User user = new User();
 	protected String username;
 	protected String password;
+	
+	@SuppressWarnings("unchecked")
+	public UserManager() {
+		Properties prop = new Properties();
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
+		try {
+			prop.load(inputStream);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		userManagerFilename = prop.getProperty("feed-filename");
+		userManagerFile = new File(userManagerFilename);
+		userManagerFile = new File(userManagerFilename);
+		if (userManagerFile.exists()) {
+			try {
+				FileInputStream fileIn = new FileInputStream(userManagerFile);
+				ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+				users = (Hashtable<String, User>) objectIn.readObject();
+				objectIn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public void setUsername(String username) {
 		this.username = username;
@@ -55,21 +83,6 @@ public class UserManager implements Serializable {
 	}
 	public void disableRegisterView() {
 		setIsRegistering(false);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public UserManager() {
-		userFile = new File(userFilename);
-		if (userFile.exists()) {
-			try {
-				FileInputStream fileIn = new FileInputStream(userFile);
-				ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-				users = (Hashtable<String, User>) objectIn.readObject();
-				objectIn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void register() {
@@ -125,7 +138,7 @@ public class UserManager implements Serializable {
 	}
 	public void save() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream(userFile);
+			FileOutputStream fileOut = new FileOutputStream(userManagerFile);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeObject(users);
 			objectOut.flush();
