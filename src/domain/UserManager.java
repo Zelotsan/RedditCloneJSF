@@ -5,12 +5,29 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Hashtable;
 
-public class UserManager {
+
+public class UserManager implements Serializable {
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userFilename = "/Volumes/HDD/dmh/Downloads/users.ser";
+	protected String userFilename = "/Users/marco/Documents/Temp/users.ser";
 	protected File userFile;
+	
+	User user = new User();
+	String username, password;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getUsername() {
+		return this.username;
+	}
+	public String getPassword() {
+		return this.password;
+	}
 
 	@SuppressWarnings("unchecked")
 	public UserManager() {
@@ -27,19 +44,19 @@ public class UserManager {
 		}
 	}
 
-	public boolean register(User user) throws UserException {
-		if (users.get(user.getUsername()) != null) {
-			throw new UserException();
+	public void register() throws UserException {
+		System.out.println(username + " " + password);
+		if (username == null && password == null) {
+			throw new UserException("Username and/or password is not set!");
 		}
-		if (users.containsKey(user.getUsername())) {
+		if (users.containsKey(username)) {
 			throw new UserException("Username already exists. Choose a different one!");
-		}
-		if (user.checkEntries()) {
-			users.put(user.getUsername(), user);
-			save();
-			return true;
-		}
-		return false;
+		} 
+		user.setUsername(this.username);
+		user.setPassword(this.password);
+		users.put(user.getUsername(), user);
+		save();
+		
 	}
 
 	public User login(String login, String password) throws UserException {
