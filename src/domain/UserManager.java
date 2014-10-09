@@ -10,6 +10,7 @@ import java.util.Hashtable;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 public class UserManager implements Serializable {
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
 	protected String userFilename = "/Users/marco/Documents/Temp/users.ser";
@@ -97,22 +98,28 @@ public class UserManager implements Serializable {
 			} catch (UserException e) {
 				handleException(e);
 			}
-		}
-		User user = users.get(username);
-		if (user != null && user.checkPassword(password)) {
-			isLogedIn = true;	
 		} else {
-			try {
-				throw new UserException("Username and/or Password is invalid!");
-			} catch (UserException e) {
-				handleException(e);
+			User user = users.get(username);
+			if (user != null && user.checkPassword(password)) {
+				isLogedIn = true;	
+			} else {
+				try {
+					throw new UserException("Username and/or Password is invalid!");
+				} catch (UserException e) {
+					handleException(e);
+				}
 			}
 		}
 	}
 	public void logout() {
 		isLogedIn = false;
+		invalidateSession();
 	}
 
+	private void invalidateSession() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+	    session.invalidate();
+	}
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(userFile);
