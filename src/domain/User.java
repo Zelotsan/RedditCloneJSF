@@ -2,9 +2,7 @@ package domain;
 
 import java.io.Serializable;
 
-import javax.faces.bean.ManagedBean;
 
-@ManagedBean
 public class User implements Serializable{
 	
 	private String username;

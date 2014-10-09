@@ -8,6 +8,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Hashtable;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 
 public class UserManager implements Serializable {
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
@@ -44,13 +47,21 @@ public class UserManager implements Serializable {
 		}
 	}
 
-	public void register() throws UserException {
+	public void register() {
 		System.out.println(username + " " + password);
 		if (username == null && password == null) {
-			throw new UserException("Username and/or password is not set!");
+			try {
+				throw new UserException("Username and/or password is not set!");
+			} catch (UserException e) {
+				handleException(e);
+			}
 		}
 		if (users.containsKey(username)) {
-			throw new UserException("Username already exists. Choose a different one!");
+			try {
+				throw new UserException("Username already exists. Choose a different one!");
+			} catch (UserException e) {
+				handleException(e);
+			}
 		} 
 		user.setUsername(this.username);
 		user.setPassword(this.password);
@@ -59,6 +70,17 @@ public class UserManager implements Serializable {
 		
 	}
 
+	private void handleException(UserException e) {
+		String message="";
+		if (e instanceof UserException){
+		message = e.getMessage();
+		}
+		else
+		message = "An unexpected error occured !";
+		FacesMessage facesMessage = new FacesMessage(message);
+		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
+		
+	}
 	public User login(String login, String password) throws UserException {
 		if ((login == null && password == null)	|| (login == "" && password == "")) {
 			return null;
