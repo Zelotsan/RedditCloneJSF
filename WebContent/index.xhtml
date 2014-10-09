@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>Project Name</title>
         <meta name="author" content="The Author"></meta>
@@ -31,13 +33,42 @@
         </b:navBar>
         <b:jumbotron>
             <b:container>
-                <h1>Hello, world!</h1>
-                <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. 
-                   Use it as a starting point to create something more unique.
-                </p>
-                <p>
-                    <a href="https://github.com/TheCoder4eu/BootsFacesWeb/blob/master/web/examples/jumbotron.xhtml" class="btn btn-lg btn-info">View Page Source »</a>
-                </p>
+            	<div rendered="#{userManager.isLogedIn}">
+	                <h1>Submit a new Link.</h1>
+	                <p>The community is waiting for it!
+	                </p>
+	                <b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
+	                <b:modal id="linkModal" title="Submit new link">
+									<table class="table">
+										<tbody>
+											<tr>
+												<td>
+													<h:outputText value="Titel: "></h:outputText>
+												</td>
+												<td>
+													<b:inputText placeholder="Titel.." id="title"  fieldSize="sm"/>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="Link: "></h:outputText>
+												</td>
+												<td>
+													<b:inputText placeholder="http://www.beispiel.ch" id="link" fieldSize="sm"/>
+												</td>
+											</tr>
+										</tbody>
+											
+										
+										
+									</table>
+							
+						<f:facet name="footer">
+						<b:button value="Close" dismiss="modal" onclick="return false;"/>
+						<b:button value="Submit new link" look="primary" dismiss="modal" onclick="return false;"/>
+						</f:facet>
+					</b:modal>
+				</div>
             </b:container>
 
         </b:jumbotron>

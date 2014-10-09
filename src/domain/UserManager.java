@@ -63,21 +63,22 @@ public class UserManager implements Serializable {
 			} catch (UserException e) {
 				handleException(e);
 			}
-		}
+		} else { return "register.xhtml"; }
 		if (users.containsKey(username)) {
 			try {
 				throw new UserException("Username already exists. Choose a different one!");
 			} catch (UserException e) {
 				handleException(e);
 			}
-		} 
-		user.setUsername(this.username);
-		user.setPassword(this.password);
-		users.put(user.getUsername(), user);
-		save();
-		login();
-		return "index.xhtml";
-		
+		} else {
+			user.setUsername(this.username);
+			user.setPassword(this.password);
+			users.put(user.getUsername(), user);
+			save();
+			login();
+			return "index.xhtml";
+		}
+		return "register.xhtml";
 	}
 
 	private void handleException(UserException e) {
