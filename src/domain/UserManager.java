@@ -81,15 +81,24 @@ public class UserManager implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 		
 	}
-	public User login(String login, String password) throws UserException {
-		if ((login == null && password == null)	|| (login == "" && password == "")) {
-			return null;
+	public String login() {
+		if ((username == null && password == null)	|| (username == "" && password == "")) {
+			try {
+				throw new UserException("Username and/or password invalid!");
+			} catch (UserException e) {
+				handleException(e);
+			}
 		}
-		User user = users.get(login);
+		User user = users.get(username);
 		if (user != null && user.checkPassword(password)) {
-			return user;
+			return "logedIn.xhtml";
 		}
-		throw new UserException();
+		try {
+			throw new UserException("Login failed");
+		} catch (UserException e) {
+			handleException(e);
+		}
+		return null;
 	}
 
 	public void save() {
