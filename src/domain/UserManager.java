@@ -10,15 +10,15 @@ import java.util.Hashtable;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
-
 public class UserManager implements Serializable {
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
 	protected String userFilename = "/Users/marco/Documents/Temp/users.ser";
 	protected File userFile;
+	protected boolean isLogedIn = false;
+	protected String username, password;
 	
 	User user = new User();
-	String username, password;
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -31,7 +31,14 @@ public class UserManager implements Serializable {
 	public String getPassword() {
 		return this.password;
 	}
-
+	
+	public boolean getIsLogedIn() {
+		return isLogedIn;
+	}
+	public void setLogedIn(boolean isLogedIn) {
+		this.isLogedIn = isLogedIn;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public UserManager() {
 		userFile = new File(userFilename);
@@ -47,7 +54,7 @@ public class UserManager implements Serializable {
 		}
 	}
 
-	public void register() {
+	public String register() {
 		System.out.println(username + " " + password);
 		if (username == null && password == null) {
 			try {
@@ -67,6 +74,8 @@ public class UserManager implements Serializable {
 		user.setPassword(this.password);
 		users.put(user.getUsername(), user);
 		save();
+		login();
+		return "index.xhtml";
 		
 	}
 
@@ -81,7 +90,7 @@ public class UserManager implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 		
 	}
-	public String login() {
+	public void login() {
 		if ((username == null && password == null)	|| (username == "" && password == "")) {
 			try {
 				throw new UserException("Username and/or password invalid!");
@@ -91,14 +100,17 @@ public class UserManager implements Serializable {
 		}
 		User user = users.get(username);
 		if (user != null && user.checkPassword(password)) {
-			return "logedIn.xhtml";
+			isLogedIn = true;	
+		} else {
+			try {
+				throw new UserException("Username and/or Password is invalid!");
+			} catch (UserException e) {
+				handleException(e);
+			}
 		}
-		try {
-			throw new UserException("Login failed");
-		} catch (UserException e) {
-			handleException(e);
-		}
-		return null;
+	}
+	public void logout() {
+		isLogedIn = false;
 	}
 
 	public void save() {
