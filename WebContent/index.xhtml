@@ -24,7 +24,9 @@
                     <h:inputSecret rendered="#{!userManager.loggedIn}" class="form-control input-sm" id="password" value="#{userManager.password}" fieldSize="sm"/>
                 </div> 
                 #{' '}
-                <b:commandButton rendered="#{!userManager.loggedIn}" action="#{userManager.login}" value="Sign in" look="success" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton rendered="#{!userManager.loggedIn}" action="#{userManager.login}" value="Sign in" look="success" icon="chevron-right" iconAlign="right">
+                	<f:actionListener binding="#{userManager.disableRegisterView()}"/>
+                </b:commandButton>
                 <b:commandButton rendered="#{!userManager.loggedIn and (!userManager.isRegistering)}" action="#{userManager.enableRegisterView}" value="Sign up" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
                 <h:outputText rendered="#{userManager.loggedIn}" value="Hallo #{userManager.username}  " style="color:white"></h:outputText>
                 <b:commandButton rendered="#{userManager.loggedIn}" action="#{userManager.logout}" value="Logout" look="primary"/>

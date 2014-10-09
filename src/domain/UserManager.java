@@ -14,15 +14,15 @@ import javax.servlet.http.HttpSession;
 
 public class UserManager implements Serializable {
 	private static final long serialVersionUID = 709188204922858134L;
+	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
 	protected String userFilename = "/Volumes/HDD/dmh/Downloads/feed.ser";
 	protected File userFile;
-	protected boolean loggedIn = false;
+	private boolean loggedIn = false;
 	protected boolean isRegistering = false;
+	User user = new User();
 	protected String username;
 	protected String password;
-	
-	User user = new User();
 	
 	public void setUsername(String username) {
 		this.username = username;
@@ -37,10 +37,10 @@ public class UserManager implements Serializable {
 		return this.password;
 	}
 	
-	public boolean getIsLogedIn() {
+	public boolean getLoggedIn() {
 		return loggedIn;
 	}
-	public void setIsLogedIn(boolean isLogedIn) {
+	public void setLoggedIn(boolean isLogedIn) {
 		this.loggedIn = isLogedIn;
 	}
 	
@@ -71,18 +71,10 @@ public class UserManager implements Serializable {
 			}
 		}
 	}
-	
-	public boolean getLoggedIn() {
-		return loggedIn;
-	}
-	public void setLoggedIn(boolean isLogedIn) {
-		this.loggedIn = isLogedIn;
-	}
 
 	public void register() {
-	//	invalidateSession();
-		if (username == null || password == null || username == "" || password == "") {
-			handleException(new UserException("Username and/or password is not set!"));
+		if (validateCredentials()) {
+			handleException(new UserException(INVALID_CREDENTIALS));
 		} else if (users.containsKey(username)) {
 				handleException(new UserException("Username already exists. Choose a different one!"));
 		} else {
@@ -93,6 +85,9 @@ public class UserManager implements Serializable {
 			login();
 			disableRegisterView();
 		}
+	}
+	private boolean validateCredentials() {
+		return username == null || password == null || username == "" || password == "";
 	}
 
 	private void handleException(UserException e) {
@@ -106,15 +101,15 @@ public class UserManager implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 	}
 	public void login() {
-		if ((username == null || password == null)	|| (username == "" || password == "")) {
-				handleException(new UserException("Username and/or password is invalid!"));
+		if (validateCredentials()) {
+				handleException(new UserException(INVALID_CREDENTIALS));
 				invalidateSession();
 		} else {
 			user = users.get(username);
 			if (user != null && user.checkPassword(password)) {
 				loggedIn = true;	
 			} else {
-					handleException(new UserException("Username and/or password is invalid!"));
+					handleException(new UserException(INVALID_CREDENTIALS));
 					invalidateSession();
 			}
 		}
