@@ -1,14 +1,23 @@
 package domain;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-public class Post {
+public class Post extends PublishedContent {
 	
 	private String title;
 	private URL link;
-	private int vote;
-	private Date date;
+	private List<Comment> comments;
+	
+	public Post() {
+		comments = Collections.synchronizedList(new ArrayList<Comment>());
+		date = Calendar.getInstance();		
+		date.setTime(new Date());
+	}
 	
 	public String getTitle() {
 		return title;
@@ -22,17 +31,11 @@ public class Post {
 	public void setLink(URL link) {
 		this.link = link;
 	}
-	public int getVote() {
-		return vote;
+	public List<Comment> getComments() {
+		return comments;
 	}
-	public void setVote(int vote) {
-		this.vote = vote;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void addComment(Comment comment) {
+		comments.add(comment);
 	}
 
 	public boolean checkEntries() throws PostException {

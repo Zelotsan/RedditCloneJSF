@@ -6,15 +6,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
+import javax.annotation.ManagedBean;
+
+@ManagedBean
 public class Feed {
-	protected Vector<Post> posts = new Vector<Post>();
+	protected List<Post> posts;
 	protected String feedFilename = "/Volumes/HDD/dmh/Downloads/feed.ser";
 	protected File feedFile;
 
 	@SuppressWarnings("unchecked")
 	public Feed() {
+		posts = Collections.synchronizedList(new ArrayList<Post>());
 		feedFile = new File(feedFilename);
 		if (feedFile.exists()) {
 			try {
@@ -28,14 +35,14 @@ public class Feed {
 		}
 	}
 
-	public void addEntry(Post post) throws IOException, PostException {
+	public void addPost(Post post) throws IOException, PostException {
 		if(post.checkEntries()) {
-			posts.insertElementAt(post, 0);
+			posts.add(post);
 			save();
 		}
 	}
 
-	public Vector<Post> getEntries() {
+	public List<Post> getPosts() {
 		return posts;
 	}
 

@@ -1,12 +1,20 @@
 package domain;
 
+import java.util.Calendar;
 import java.util.Date;
 
-public class Comment {
+import javax.annotation.ManagedBean;
+
+@ManagedBean
+public class Comment extends PublishedContent {
 	
 	private String text;
-	private int vote;
-	private Date date;
+	private User creator;
+	
+	public Comment() {
+		date = Calendar.getInstance();		
+		date.setTime(new Date());
+	}
 	
 	public String getText() {
 		return text;
@@ -14,16 +22,10 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public int getVote() {
-		return vote;
+	public User getCreator() {
+		return creator;
 	}
-	public void setVote(int vote) {
-		this.vote = vote;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 }
