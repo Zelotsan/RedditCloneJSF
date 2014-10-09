@@ -18,9 +18,44 @@ public class UserManager implements Serializable {
 	protected String userFilename = "/Volumes/HDD/dmh/Downloads/feed.ser";
 	protected File userFile;
 	protected boolean loggedIn = false;
-	protected String username, password;
+	protected boolean isRegistering = false;
+	protected String username;
+	protected String password;
 	
 	User user = new User();
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getUsername() {
+		return this.username;
+	}
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public boolean getIsLogedIn() {
+		return loggedIn;
+	}
+	public void setIsLogedIn(boolean isLogedIn) {
+		this.loggedIn = isLogedIn;
+	}
+	
+	public boolean getIsRegistering() {
+		return isRegistering;
+	}
+	public void setIsRegistering(boolean isRegistering) {
+		this.isRegistering = isRegistering;
+	}
+	public void enableRegisterView() {
+		setIsRegistering(true);
+	}
+	public void disableRegisterView() {
+		setIsRegistering(false);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public UserManager() {
@@ -37,19 +72,6 @@ public class UserManager implements Serializable {
 		}
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getUsername() {
-		return this.username;
-	}
-	public String getPassword() {
-		return this.password;
-	}
-	
 	public boolean getLoggedIn() {
 		return loggedIn;
 	}
@@ -57,60 +79,43 @@ public class UserManager implements Serializable {
 		this.loggedIn = isLogedIn;
 	}
 
-	public String register() {
-		System.out.println(username + " " + password);
-		if (username == null && password == null) {
-			try {
-				throw new UserException("Username and/or password is not set!");
-			} catch (UserException e) {
-				handleException(e);
-			}
-		} else { return "register.xhtml"; }
-		if (users.containsKey(username)) {
-			try {
-				throw new UserException("Username already exists. Choose a different one!");
-			} catch (UserException e) {
-				handleException(e);
-			}
+	public void register() {
+	//	invalidateSession();
+		if (username == null || password == null || username == "" || password == "") {
+			handleException(new UserException("Username and/or password is not set!"));
+		} else if (users.containsKey(username)) {
+				handleException(new UserException("Username already exists. Choose a different one!"));
 		} else {
 			user.setUsername(this.username);
 			user.setPassword(this.password);
 			users.put(user.getUsername(), user);
 			save();
 			login();
-			return "index.xhtml";
+			disableRegisterView();
 		}
-		return "register.xhtml";
 	}
 
 	private void handleException(UserException e) {
 		String message="";
 		if (e instanceof UserException){
-			message = e.getMessage();
+		message = e.getMessage();
+		} else {
+			message = "An unexpected error occured !";
 		}
-		else
-		message = "An unexpected error occured !";
 		FacesMessage facesMessage = new FacesMessage(message);
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
-		
 	}
 	public void login() {
-		if ((username == null && password == null)	|| (username == "" && password == "")) {
-			try {
-				throw new UserException("Username and/or password invalid!");
-			} catch (UserException e) {
-				handleException(e);
-			}
+		if ((username == null || password == null)	|| (username == "" || password == "")) {
+				handleException(new UserException("Username and/or password is invalid!"));
+				invalidateSession();
 		} else {
-			User user = users.get(username);
+			user = users.get(username);
 			if (user != null && user.checkPassword(password)) {
 				loggedIn = true;	
 			} else {
-				try {
-					throw new UserException("Username and/or Password is invalid!");
-				} catch (UserException e) {
-					handleException(e);
-				}
+					handleException(new UserException("Username and/or password is invalid!"));
+					invalidateSession();
 			}
 		}
 	}
