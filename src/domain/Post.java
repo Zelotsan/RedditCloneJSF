@@ -37,6 +37,9 @@ public class Post extends PublishedContent {
 	public void addComment(Comment comment) {
 		comments.add(comment);
 	}
+	public int getCommentsCount() {
+		return comments.size();
+	}
 
 	public boolean checkEntries() throws PostException {
 		if (title == null || title.equals(""))

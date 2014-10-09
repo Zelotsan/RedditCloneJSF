@@ -3,8 +3,8 @@ package domain;
 import java.io.Serializable;
 
 
-public class User implements Serializable{
-	
+public class User implements Serializable {
+	private static final long serialVersionUID = -6114001634652383731L;
 	private String username;
 	private String password;
 	

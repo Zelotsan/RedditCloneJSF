@@ -11,34 +11,16 @@ import java.util.Hashtable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+
 public class UserManager implements Serializable {
+	private static final long serialVersionUID = 709188204922858134L;
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userFilename = "/Users/marco/Documents/Temp/users.ser";
+	protected String userFilename = "/Volumes/HDD/dmh/Downloads/feed.ser";
 	protected File userFile;
-	protected boolean isLogedIn = false;
+	protected boolean loggedIn = false;
 	protected String username, password;
 	
 	User user = new User();
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getUsername() {
-		return this.username;
-	}
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public boolean getIsLogedIn() {
-		return isLogedIn;
-	}
-	public void setLogedIn(boolean isLogedIn) {
-		this.isLogedIn = isLogedIn;
-	}
 	
 	@SuppressWarnings("unchecked")
 	public UserManager() {
@@ -53,6 +35,26 @@ public class UserManager implements Serializable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getUsername() {
+		return this.username;
+	}
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public boolean getLoggedIn() {
+		return loggedIn;
+	}
+	public void setLoggedIn(boolean isLogedIn) {
+		this.loggedIn = isLogedIn;
 	}
 
 	public String register() {
@@ -84,7 +86,7 @@ public class UserManager implements Serializable {
 	private void handleException(UserException e) {
 		String message="";
 		if (e instanceof UserException){
-		message = e.getMessage();
+			message = e.getMessage();
 		}
 		else
 		message = "An unexpected error occured !";
@@ -102,7 +104,7 @@ public class UserManager implements Serializable {
 		} else {
 			User user = users.get(username);
 			if (user != null && user.checkPassword(password)) {
-				isLogedIn = true;	
+				loggedIn = true;	
 			} else {
 				try {
 					throw new UserException("Username and/or Password is invalid!");
@@ -113,7 +115,7 @@ public class UserManager implements Serializable {
 		}
 	}
 	public void logout() {
-		isLogedIn = false;
+		loggedIn = false;
 		invalidateSession();
 	}
 
