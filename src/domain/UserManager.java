@@ -12,12 +12,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 public class UserManager implements Serializable {
-	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userFilename = "/Users/marco/Documents/Temp/users.ser";
-	protected File userFile;
-	protected boolean isLogedIn = false;
-	protected boolean isRegistering = false;
-	protected String username, password;
+	private Hashtable<String, User> users = new Hashtable<String, User>();
+	private String userFilename = "/Users/marco/Documents/Temp/users.ser";
+	private File userFile;
+	private boolean isLogedIn = false;
+	private boolean isRegistering = false;
+	private String username, password;
+	private String wrongCredentials = "Username and/or password is invalid!";
 	
 	User user = new User();
 	
@@ -70,9 +71,8 @@ public class UserManager implements Serializable {
 	}
 
 	public void register() {
-	//	invalidateSession();
-		if (username == null || password == null || username == "" || password == "") {
-			handleException(new UserException("Username and/or password is not set!"));
+		if (validateCredentials()) {
+			handleException(new UserException(wrongCredentials));
 		} else if (users.containsKey(username)) {
 				handleException(new UserException("Username already exists. Choose a different one!"));
 		} else {
@@ -83,6 +83,9 @@ public class UserManager implements Serializable {
 			login();
 			disableRegisterView();
 		}
+	}
+	private boolean validateCredentials() {
+		return username == null || password == null || username == "" || password == "";
 	}
 
 	private void handleException(UserException e) {
@@ -96,15 +99,15 @@ public class UserManager implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 	}
 	public void login() {
-		if ((username == null || password == null)	|| (username == "" || password == "")) {
-				handleException(new UserException("Username and/or password is invalid!"));
+		if (validateCredentials()) {
+				handleException(new UserException(wrongCredentials));
 				invalidateSession();
 		} else {
 			user = users.get(username);
 			if (user != null && user.checkPassword(password)) {
 				isLogedIn = true;	
 			} else {
-					handleException(new UserException("Username and/or password is invalid!"));
+					handleException(new UserException(wrongCredentials));
 					invalidateSession();
 			}
 		}
