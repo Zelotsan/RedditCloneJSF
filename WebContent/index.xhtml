@@ -11,9 +11,9 @@
     </h:head>
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
-        <b:navBar brand="Brand" brandHref="index.xhtml" inverse="true" fixed="top">
+        <b:navBar brand="Home" brandHref="#" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Link" href="#"></b:navLink>
+                <!-- b:navLink value="Link" href="#"></b:navLink-->
             </b:navbarLinks>
             <h:form styleClass="navbar-form navbar-right">
                 <div class="form-group">
@@ -21,56 +21,87 @@
                     <!--input type="text" class="form-control" placeholder="Search"/-->
                 </div>
                 <div class="form-group">
-                    <b:inputText rendered="#{!userManager.isLogedIn}" placeholder="Password" id="password" value="#{userManager.password}" fieldSize="sm"/>
+                    <h:inputSecret rendered="#{!userManager.isLogedIn}" class="form-control input-sm" id="password" value="#{userManager.password}" fieldSize="sm"/>
                 </div> 
                 #{' '}
                 <b:commandButton rendered="#{!userManager.isLogedIn}" action="#{userManager.login}" value="Sign in" look="success" icon="chevron-right" iconAlign="right"/>
-                <b:commandButton rendered="#{!userManager.isLogedIn}" action="register" value="Sign up" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
+                <b:commandButton rendered="#{!userManager.isLogedIn and (!userManager.isRegistering)}" action="#{userManager.enableRegisterView}" value="Sign up" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
                 <h:outputText rendered="#{userManager.isLogedIn}" value="Hallo #{userManager.username}  " style="color:white"></h:outputText>
                 <b:commandButton rendered="#{userManager.isLogedIn}" action="#{userManager.logout}" value="Logout" look="primary"/>
-                <h:messages style="color:red" layout="table"/>
+                <h:messages rendered="#{!userManager.isRegistering}" style="color:red" layout="table"/>
             </h:form>
         </b:navBar>
         <b:jumbotron>
             <b:container>
-            	<div rendered="#{userManager.isLogedIn}">
+            	<h:panelGroup layout="block" rendered="#{!userManager.isLogedIn and (!userManager.isRegistering)}">
+					<h1> Herzlich willkommen</h1>
+					<p>	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+						At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+						Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+						At vero eos et accusam et justo duo dolores et ea rebum.
+						Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+					</p>
+				</h:panelGroup>
+            	<h:panelGroup layout="block" rendered="#{userManager.isLogedIn}">
 	                <h1>Submit a new Link.</h1>
 	                <p>The community is waiting for it!
 	                </p>
 	                <b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
 	                <b:modal id="linkModal" title="Submit new link">
-									<table class="table">
-										<tbody>
-											<tr>
-												<td>
-													<h:outputText value="Titel: "></h:outputText>
-												</td>
-												<td>
-													<b:inputText placeholder="Titel.." id="title"  fieldSize="sm"/>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<h:outputText value="Link: "></h:outputText>
-												</td>
-												<td>
-													<b:inputText placeholder="http://www.beispiel.ch" id="link" fieldSize="sm"/>
-												</td>
-											</tr>
-										</tbody>
-											
-										
-										
-									</table>
-							
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>
+										<h:outputText value="Titel: "></h:outputText>
+									</td>
+									<td>
+										<b:inputText placeholder="Titel.." id="title"  fieldSize="sm"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="Link: "></h:outputText>
+									</td>
+									<td>
+										<b:inputText placeholder="http://www.beispiel.ch" id="link" fieldSize="sm"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 						<f:facet name="footer">
 						<b:button value="Close" dismiss="modal" onclick="return false;"/>
 						<b:button value="Submit new link" look="primary" dismiss="modal" onclick="return false;"/>
 						</f:facet>
 					</b:modal>
-				</div>
+				</h:panelGroup>
+				<h:panelGroup layout="block" rendered="#{userManager.isRegistering}">
+					<h1> Registrierung</h1>
+	                <h:form>
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputText value="Benutzername: "></h:outputText>
+							</div>
+							<div class="col-md-4">
+								<b:inputText id = "rusername" value="#{userManager.username}" placeholder = "Username" fieldSize="sm"></b:inputText>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<h:outputText value="Passwort: "></h:outputText>
+							</div>
+							<div class="col-md-4">
+								<h:inputSecret type="password" class="form-control input-sm" id="rpassword" value="#{userManager.password}"></h:inputSecret>
+							</div>
+						</div>
+						
+						<b:commandButton value="Submit" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
+						<b:commandButton value="Cancel" id="cancel" action="#{userManager.disableRegisterView()}" look="danger"></b:commandButton>
+						
+						
+						<h:messages style="color:red" layout="table"/>
+					</h:form>
+				</h:panelGroup>
             </b:container>
-
         </b:jumbotron>
         <b:container>
             
