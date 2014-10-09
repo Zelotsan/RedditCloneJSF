@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Project Name</title>
+        <meta name="author" content="The Author"></meta>
+    </h:head>
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <b:navBar brand="Brand" brandHref="index.xhtml" inverse="true" fixed="top">
+            <b:navbarLinks>
+                <b:navLink value="Link" href="#"></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <div class="form-group">
+                    <b:inputText rendered="#{!userManager.isLogedIn}" placeholder="Username" id="username" value="#{userManager.username}" fieldSize="sm"/>
+                    <!--input type="text" class="form-control" placeholder="Search"/-->
+                </div>
+                <div class="form-group">
+                    <b:inputText rendered="#{!userManager.isLogedIn}" placeholder="Password" id="password" value="#{userManager.password}" fieldSize="sm"/>
+                </div> 
+                #{' '}
+                <b:commandButton rendered="#{!userManager.isLogedIn}" action="#{userManager.login}" value="Sign in" look="success" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton rendered="#{!userManager.isLogedIn}" action="register" value="Sign up" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
+                <h:outputText rendered="#{userManager.isLogedIn}" value="Hallo #{userManager.username}  " style="color:white"></h:outputText>
+                <b:commandButton rendered="#{userManager.isLogedIn}" action="#{userManager.logout}" value="Logout" look="primary"/>
+                <h:messages style="color:red" layout="table"/>
+            </h:form>
+        </b:navBar>
+        <b:jumbotron>
+            <b:container>
+            	<div rendered="#{userManager.isLogedIn}">
+	                <h1>Submit a new Link.</h1>
+	                <p>The community is waiting for it!
+	                </p>
+	                <b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
+	                <b:modal id="linkModal" title="Submit new link">
+									<table class="table">
+										<tbody>
+											<tr>
+												<td>
+													<h:outputText value="Titel: "></h:outputText>
+												</td>
+												<td>
+													<b:inputText placeholder="Titel.." id="title"  fieldSize="sm"/>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="Link: "></h:outputText>
+												</td>
+												<td>
+													<b:inputText placeholder="http://www.beispiel.ch" id="link" fieldSize="sm"/>
+												</td>
+											</tr>
+										</tbody>
+											
+										
+										
+									</table>
+							
+						<f:facet name="footer">
+						<b:button value="Close" dismiss="modal" onclick="return false;"/>
+						<b:button value="Submit new link" look="primary" dismiss="modal" onclick="return false;"/>
+						</f:facet>
+					</b:modal>
+				</div>
+            </b:container>
+
+        </b:jumbotron>
+        <b:container>
+            
+            <hr/>
+            <footer>
+            <p>© Company 2014</p>
+            </footer>
+        </b:container>
+
+    </h:body>
+</html>

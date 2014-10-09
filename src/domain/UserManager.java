@@ -5,13 +5,41 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Hashtable;
 
-public class UserManager {
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+public class UserManager implements Serializable {
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userFilename = "/Volumes/HDD/dmh/Downloads/users.ser";
+	protected String userFilename = "/Users/marco/Documents/Temp/users.ser";
 	protected File userFile;
-
+	protected boolean isLogedIn = false;
+	protected String username, password;
+	
+	User user = new User();
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getUsername() {
+		return this.username;
+	}
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public boolean getIsLogedIn() {
+		return isLogedIn;
+	}
+	public void setLogedIn(boolean isLogedIn) {
+		this.isLogedIn = isLogedIn;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public UserManager() {
 		userFile = new File(userFilename);
@@ -27,32 +55,72 @@ public class UserManager {
 		}
 	}
 
-	public boolean register(User user) throws UserException {
-		if (users.get(user.getUsername()) != null) {
-			throw new UserException();
-		}
-		if (users.containsKey(user.getUsername())) {
-			throw new UserException("Username already exists. Choose a different one!");
-		}
-		if (user.checkEntries()) {
+	public String register() {
+		System.out.println(username + " " + password);
+		if (username == null && password == null) {
+			try {
+				throw new UserException("Username and/or password is not set!");
+			} catch (UserException e) {
+				handleException(e);
+			}
+		} else { return "register.xhtml"; }
+		if (users.containsKey(username)) {
+			try {
+				throw new UserException("Username already exists. Choose a different one!");
+			} catch (UserException e) {
+				handleException(e);
+			}
+		} else {
+			user.setUsername(this.username);
+			user.setPassword(this.password);
 			users.put(user.getUsername(), user);
 			save();
-			return true;
+			login();
+			return "index.xhtml";
 		}
-		return false;
+		return "register.xhtml";
 	}
 
-	public User login(String login, String password) throws UserException {
-		if ((login == null && password == null)	|| (login == "" && password == "")) {
-			return null;
+	private void handleException(UserException e) {
+		String message="";
+		if (e instanceof UserException){
+		message = e.getMessage();
 		}
-		User user = users.get(login);
-		if (user != null && user.checkPassword(password)) {
-			return user;
+		else
+		message = "An unexpected error occured !";
+		FacesMessage facesMessage = new FacesMessage(message);
+		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
+		
+	}
+	public void login() {
+		if ((username == null && password == null)	|| (username == "" && password == "")) {
+			try {
+				throw new UserException("Username and/or password invalid!");
+			} catch (UserException e) {
+				handleException(e);
+			}
+		} else {
+			User user = users.get(username);
+			if (user != null && user.checkPassword(password)) {
+				isLogedIn = true;	
+			} else {
+				try {
+					throw new UserException("Username and/or Password is invalid!");
+				} catch (UserException e) {
+					handleException(e);
+				}
+			}
 		}
-		throw new UserException();
+	}
+	public void logout() {
+		isLogedIn = false;
+		invalidateSession();
 	}
 
+	private void invalidateSession() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+	    session.invalidate();
+	}
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(userFile);
