@@ -37,7 +37,7 @@ public class UserManager implements Serializable {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		userManagerFilename = prop.getProperty("feed-filename");
+		userManagerFilename = prop.getProperty("user-manager-filename");
 		userManagerFile = new File(userManagerFilename);
 		if (userManagerFile.exists()) {
 			try {
