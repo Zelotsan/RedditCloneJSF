@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14127934809980" configfile="/RedditClone/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="749" y="236" id="pf14127935753771" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14127935753772" path="/index.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="register.xhtml" x="228" y="264" id="pf14127935753773" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14127935753772" path="/register.xhtml"/>
-  <links id="pf14127935753772" target="pf14127935753773" source="pf14127935753771" outcome="register"/>
-</pageflow:Pageflow>
