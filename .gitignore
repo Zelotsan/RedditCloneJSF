@@ -2,6 +2,12 @@
 *.log
 *.settings
 *.properties
+.settings/
+build/
+*.classpath
+*.DS_Store
+*.project
 /bin/
 /.idea/
 *.orig
+BootsFaces-0.3.7-dist.jar
