@@ -53,7 +53,6 @@ public class Feed {
 			save();
 		}
 	}
-
 	public List<Post> getPosts() {
 		return posts;
 	}

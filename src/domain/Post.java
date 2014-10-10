@@ -37,7 +37,7 @@ public class Post extends PublishedContent {
 	public void addComment(Comment comment) {
 		comments.add(comment);
 	}
-	public int getCommentsCount() {
+	public int getCommentCount() {
 		return comments.size();
 	}
 

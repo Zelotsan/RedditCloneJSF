@@ -20,7 +20,7 @@ public class UserManager implements Serializable {
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
 	
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userManagerFilename = "/Volumes/HDD/dmh/Downloads/usermanager.ser";
+	protected String userManagerFilename;
 	protected File userManagerFile;
 	private boolean loggedIn = false;
 	protected boolean isRegistering = false;
@@ -38,7 +38,6 @@ public class UserManager implements Serializable {
 			System.out.println(e.getMessage());
 		}
 		userManagerFilename = prop.getProperty("feed-filename");
-		userManagerFile = new File(userManagerFilename);
 		userManagerFile = new File(userManagerFilename);
 		if (userManagerFile.exists()) {
 			try {
