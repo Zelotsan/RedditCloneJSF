@@ -34,7 +34,7 @@ public class Feed {
 		}
 	}
 	public List<Post> getPosts() {
-		return posts;
+		return Collections.unmodifiableList(posts);
 	}
 
 	private void save() {
