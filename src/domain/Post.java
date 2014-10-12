@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import domain.exception.PostException;
+
 public class Post extends PublishedContent {
 	
 	private String title;

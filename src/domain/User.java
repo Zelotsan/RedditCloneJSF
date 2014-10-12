@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 
+import domain.exception.UserException;
+
 
 public class User implements Serializable {
 	private static final long serialVersionUID = -6114001634652383731L;
