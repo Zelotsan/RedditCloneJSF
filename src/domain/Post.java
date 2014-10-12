@@ -45,9 +45,9 @@ public class Post extends PublishedContent {
 
 	public boolean checkEntries() throws PostException {
 		if (title == null || title.equals(""))
-			throw new PostException();
+			throw new PostException("Please enter a describing title for your link");
 		if (link == null)
-			throw new PostException();
+			throw new PostException("Please enter a link to post");
 		return true;
 	}
 }

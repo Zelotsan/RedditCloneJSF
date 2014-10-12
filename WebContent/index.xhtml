@@ -24,18 +24,18 @@
                     <h:inputSecret rendered="#{!userManager.loggedIn}" class="form-control input-sm" id="password" value="#{userManager.password}" fieldSize="sm"/>
                 </div> 
                 #{' '}
-                <b:commandButton rendered="#{!userManager.loggedIn}" action="#{userManager.login}" value="Sign in" look="success" icon="chevron-right" iconAlign="right">
+                <b:commandButton rendered="#{!userManager.loggedIn}" action="#{userManager.login}" value="#{texts.navbar_sign_in}" look="success" icon="chevron-right" iconAlign="right">
                 	<f:actionListener binding="#{userManager.disableRegisterView()}"/>
                 </b:commandButton>
-                <b:commandButton rendered="#{!userManager.loggedIn and (!userManager.isRegistering)}" action="#{userManager.enableRegisterView}" value="Sign up" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
-                <h:outputText rendered="#{userManager.loggedIn}" value="Hallo #{userManager.username}  " style="color:white"></h:outputText>
-                <b:commandButton rendered="#{userManager.loggedIn}" action="#{userManager.logout}" value="Logout" look="primary"/>
-                <h:messages rendered="#{!userManager.isRegistering}" style="color:red" layout="table"/>
+                <b:commandButton rendered="#{!userManager.loggedIn and (!userManager.registering)}" action="#{userManager.enableRegisterView}" value="#{texts.navbar_sign_up}" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
+                <h:outputText rendered="#{userManager.loggedIn}" value="#{texts.navbar_greeting} #{userManager.username}  " style="color:white"></h:outputText>
+                <b:commandButton rendered="#{userManager.loggedIn}" action="#{userManager.logout}" value="#{texts.navbar_log_out}" look="primary"/>
+                <h:messages rendered="#{!userManager.registering}" style="color:red" layout="table"/>
             </h:form>
         </b:navBar>
         <b:jumbotron>
             <b:container>
-            	<h:panelGroup layout="block" rendered="#{!userManager.loggedIn and (!userManager.isRegistering)}">
+            	<h:panelGroup layout="block" rendered="#{!userManager.loggedIn and (!userManager.registering)}">
 					<h1> Herzlich willkommen</h1>
 					<p>	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
 						At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
@@ -76,12 +76,12 @@
 						</f:facet>
 					</b:modal>
 				</h:panelGroup>
-				<h:panelGroup layout="block" rendered="#{userManager.isRegistering}">
+				<h:panelGroup layout="block" rendered="#{userManager.registering}">
 					<h1> Registrierung</h1>
 	                <h:form>
 						<div class="row">
 							<div class="col-md-2">
-								<h:outputText value="Benutzername: "></h:outputText>
+								<h:outputText value="#{texts.register_username}: "></h:outputText>
 							</div>
 							<div class="col-md-4">
 								<b:inputText id = "rusername" value="#{userManager.username}" placeholder = "Username" fieldSize="sm"></b:inputText>
@@ -89,15 +89,15 @@
 						</div>
 						<div class="row">
 							<div class="col-md-2">
-								<h:outputText value="Passwort: "></h:outputText>
+								<h:outputText value="#{texts.register_password}: "></h:outputText>
 							</div>
 							<div class="col-md-4">
 								<h:inputSecret type="password" class="form-control input-sm" id="rpassword" value="#{userManager.password}"></h:inputSecret>
 							</div>
 						</div>
 						
-						<b:commandButton value="Submit" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
-						<b:commandButton value="Cancel" id="cancel" action="#{userManager.disableRegisterView()}" look="danger"></b:commandButton>
+						<b:commandButton value="#{texts.register_submit}" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
+						<b:commandButton value="#{texts.register_cancel}" id="cancel" action="#{userManager.disableRegisterView()}" look="danger"></b:commandButton>
 						
 						
 						<h:messages style="color:red" layout="table"/>

@@ -22,7 +22,7 @@ public class UserManager implements Serializable {
 	protected Map<String, User> users = new Hashtable<String, User>();
 	protected File userManagerFile;
 	private boolean loggedIn = false;
-	protected boolean isRegistering = false;
+	protected boolean registering = false;
 	User user = new User();
 	protected String username;
 	protected String password;
@@ -51,21 +51,21 @@ public class UserManager implements Serializable {
 	public boolean getLoggedIn() {
 		return loggedIn;
 	}
-	public void setLoggedIn(boolean isLogedIn) {
-		this.loggedIn = isLogedIn;
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 	
-	public boolean getIsRegistering() {
-		return isRegistering;
+	public boolean getRegistering() {
+		return registering;
 	}
-	public void setIsRegistering(boolean isRegistering) {
-		this.isRegistering = isRegistering;
+	public void setRegistering(boolean isRegistering) {
+		this.registering = isRegistering;
 	}
 	public void enableRegisterView() {
-		setIsRegistering(true);
+		setRegistering(true);
 	}
 	public void disableRegisterView() {
-		setIsRegistering(false);
+		setRegistering(false);
 	}
 
 	public void register() {

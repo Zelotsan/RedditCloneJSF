@@ -32,9 +32,9 @@ public class User implements Serializable {
 
 	public boolean checkEntries() throws UserException {
 		if (username == null || username.equals(""))
-			throw new UserException();
+			throw new UserException("Please provide a username");
 		if (password == null || password.equals(""))
-			throw new UserException();
+			throw new UserException("Please provide a password");
 		return true;
 	}
 }
