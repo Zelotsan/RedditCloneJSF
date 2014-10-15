@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import domain.exception.PostException;
 
-public class Post extends PublishedContent {
+public class Post extends PublishedContent implements Serializable{
 	
 	private String title;
 	private URL link;
@@ -43,7 +44,7 @@ public class Post extends PublishedContent {
 		return comments.size();
 	}
 
-	public boolean checkEntries() throws PostException {
+	public boolean checkEntries(String title, String link) throws PostException {
 		if (title == null || title.equals(""))
 			throw new PostException("Please enter a describing title for your link");
 		if (link == null)

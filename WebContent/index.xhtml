@@ -4,9 +4,9 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-        >
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 <h:body>
-
     <ui:composition template="/template/layout.xhtml">
         <ui:define name="content">
             <div class="page-header" id="banner">
@@ -16,7 +16,44 @@
                         <p>
                         	The community is waiting for it!
                         </p>
-
+                        <h:panelGroup layout="block" rendered="#{userManager.loggedIn}">
+                        	<b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
+		                	<b:modal id="linkModal" title="Submit new link">
+								<h:form><table class="table">
+									<tbody>
+										<tr>
+											<td>
+												<h:outputText value="Titel: "></h:outputText>
+											</td>
+											<td>
+												<b:inputText placeholder="Titel.." id="mtitle"  fieldSize="sm" value="#{feed.title}"/>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText value="Link: "></h:outputText>
+											</td>
+											<td>
+												<b:inputText placeholder="http://www.beispiel.ch" id="mlink" fieldSize="sm" value="#{feed.link}"/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<b:commandButton value="Submit new link" look="primary" dismiss="modal" action="#{feed.addPost()}"/>
+								<b:button value="Close" dismiss="modal" onclick="return false;"/>
+								
+								</h:form>
+							</b:modal>
+							
+									<ul class="list-group">
+										<ui:repeat var="post" value="#{feed.posts}">
+											<li class="list-group-item">
+												<a href="#{post.link}"><h4>#{post.title}</h4></a>
+											</li>
+										</ui:repeat>
+									</ul>
+							<h:messages style="color:red" />
+						</h:panelGroup>
                     </div>
                 </div>
             </div>

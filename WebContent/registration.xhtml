@@ -13,7 +13,7 @@
 		                <h:form>
 							<div class="row">
 								<div class="col-md-2">
-									<h:outputText value="#{texts.register_username}: "></h:outputText>
+									<h:outputText value="Username "></h:outputText>
 								</div>
 								<div class="col-md-4">
 									<b:inputText id="rUsername" value="#{userManager.username}" placeholder="Username" fieldSize="sm" required="true" requiredMessage="Please enter Username!"></b:inputText>
@@ -21,15 +21,15 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2">
-									<h:outputText value="#{texts.register_password}: "></h:outputText>
+									<h:outputText value="Password: "></h:outputText>
 								</div>
 								<div class="col-md-4">
 									<h:inputSecret id="rPassword" type="password" class="form-control input-sm" value="#{userManager.password}" required="true" requiredMessage="Please enter Password!"></h:inputSecret>
 								</div>
 							</div>
 							
-							<b:commandButton value="#{texts.register_submit}" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
-							<b:commandButton value="#{texts.register_cancel}" id="cancel" look="danger" type="reset"></b:commandButton>		
+							<b:commandButton value="Submit" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
+							<b:commandButton value="Cancel" id="cancel" look="danger" type="reset"></b:commandButton>		
 						</h:form>
 					</div>
 				</div>
