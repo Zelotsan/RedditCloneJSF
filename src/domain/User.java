@@ -2,6 +2,8 @@ package domain;
 
 import java.io.Serializable;
 
+import domain.exception.UserException;
+
 
 public class User implements Serializable {
 	private static final long serialVersionUID = -6114001634652383731L;
@@ -30,9 +32,9 @@ public class User implements Serializable {
 
 	public boolean checkEntries() throws UserException {
 		if (username == null || username.equals(""))
-			throw new UserException();
+			throw new UserException("Please provide a username");
 		if (password == null || password.equals(""))
-			throw new UserException();
+			throw new UserException("Please provide a password");
 		return true;
 	}
 }

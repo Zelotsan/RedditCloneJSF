@@ -1,54 +1,38 @@
 package domain;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Hashtable;
-import java.util.Properties;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import util.SerializedObjectLoader;
+import domain.exception.UserException;
+
 public class UserManager implements Serializable {
 	private static final long serialVersionUID = 709188204922858134L;
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
 	
-	protected Hashtable<String, User> users = new Hashtable<String, User>();
-	protected String userManagerFilename;
+	protected Map<String, User> users = new Hashtable<String, User>();
 	protected File userManagerFile;
 	private boolean loggedIn = false;
-	protected boolean isRegistering = false;
+	protected boolean registering = false;
 	User user = new User();
 	protected String username;
 	protected String password;
 	
 	@SuppressWarnings("unchecked")
 	public UserManager() {
-		Properties prop = new Properties();
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
-		try {
-			prop.load(inputStream);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		userManagerFilename = prop.getProperty("user-manager-filename");
-		userManagerFile = new File(userManagerFilename);
-		if (userManagerFile.exists()) {
-			try {
-				FileInputStream fileIn = new FileInputStream(userManagerFile);
-				ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-				users = (Hashtable<String, User>) objectIn.readObject();
-				objectIn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		SerializedObjectLoader<User> loader = new SerializedObjectLoader<User>();
+		userManagerFile = new File(loader.loadFilename("user-manager-filename"));
+		users = (Hashtable<String, User>) loader.loadObjects(userManagerFile);
+		users = Collections.synchronizedMap(users);
 	}
 	
 	public void setUsername(String username) {
@@ -67,21 +51,21 @@ public class UserManager implements Serializable {
 	public boolean getLoggedIn() {
 		return loggedIn;
 	}
-	public void setLoggedIn(boolean isLogedIn) {
-		this.loggedIn = isLogedIn;
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 	
-	public boolean getIsRegistering() {
-		return isRegistering;
+	public boolean getRegistering() {
+		return registering;
 	}
-	public void setIsRegistering(boolean isRegistering) {
-		this.isRegistering = isRegistering;
+	public void setRegistering(boolean isRegistering) {
+		this.registering = isRegistering;
 	}
 	public void enableRegisterView() {
-		setIsRegistering(true);
+		setRegistering(true);
 	}
 	public void disableRegisterView() {
-		setIsRegistering(false);
+		setRegistering(false);
 	}
 
 	public void register() {

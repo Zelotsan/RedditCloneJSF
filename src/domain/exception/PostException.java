@@ -1,4 +1,4 @@
-package domain;
+package domain.exception;
 
 public class PostException extends Exception {
 	private static final long serialVersionUID = 5220252763735012330L;

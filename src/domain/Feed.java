@@ -1,19 +1,17 @@
 package domain;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
-import java.util.Vector;
 
 import javax.annotation.ManagedBean;
+
+import util.SerializedObjectLoader;
+import domain.exception.PostException;
 
 @ManagedBean
 public class Feed {
@@ -23,28 +21,10 @@ public class Feed {
 
 	@SuppressWarnings("unchecked")
 	public Feed() {
+		SerializedObjectLoader<Post> loader = new SerializedObjectLoader<Post>();
+		feedFile = new File(loader.loadFilename("feed-filename"));
+		posts = (List<Post>) loader.loadObjects(feedFile);
 		posts = Collections.synchronizedList(new ArrayList<Post>());
-		
-		Properties prop = new Properties();
-		String propFileName = "config.properties";
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-		try {
-			prop.load(inputStream);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		feedFilename = prop.getProperty("feed-filename");
-		feedFile = new File(feedFilename);
-		if (feedFile.exists()) {
-			try {
-				FileInputStream fileIn = new FileInputStream(feedFile);
-				ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-				posts = (Vector<Post>) objectIn.readObject();
-				objectIn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void addPost(Post post) throws IOException, PostException {
@@ -54,7 +34,7 @@ public class Feed {
 		}
 	}
 	public List<Post> getPosts() {
-		return posts;
+		return Collections.unmodifiableList(posts);
 	}
 
 	private void save() {
