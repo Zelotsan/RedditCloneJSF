@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+<h:body>
+    <ui:composition template="/template/layout.xhtml">
+        <ui:define name="content">
+            <h:panelGroup layout="block">
+                <div class="row">
+                    <div class="col-xs-12" style="padding-top: 50px;">
+						<h1> Registrierung</h1>
+		                <h:form>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputText value="#{texts.register_username}: "></h:outputText>
+								</div>
+								<div class="col-md-4">
+									<b:inputText id="rUsername" value="#{userManager.username}" placeholder="Username" fieldSize="sm" required="true" requiredMessage="Please enter Username!"></b:inputText>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputText value="#{texts.register_password}: "></h:outputText>
+								</div>
+								<div class="col-md-4">
+									<h:inputSecret id="rPassword" type="password" class="form-control input-sm" value="#{userManager.password}" required="true" requiredMessage="Please enter Password!"></h:inputSecret>
+								</div>
+							</div>
+							
+							<b:commandButton value="#{texts.register_submit}" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
+							<b:commandButton value="#{texts.register_cancel}" id="cancel" look="danger" type="reset"></b:commandButton>		
+						</h:form>
+					</div>
+				</div>
+				</h:panelGroup>
+				<h:messages style="color:red" layout="table" for="rUsername"/>
+                <h:messages style="color:red" layout="table" for="rPassword"/>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

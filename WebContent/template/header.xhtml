@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<body>
+	<ui:composition>
+        <b:navBar brand="Home" brandHref="index.xhtml" inverse="true" fixed="top">
+            <b:navbarLinks>
+                <!-- b:navLink value="Link" href="#"></b:navLink-->
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <div class="form-group">
+                    <b:inputText rendered="#{!userManager.loggedIn}" placeholder="Username" id="username" value="#{userManager.username}" fieldSize="sm" required="true" requiredMessage="Please enter Username!"/>
+                    <!--input type="text" class="form-control" placeholder="Search"/-->
+                </div>
+                <div class="form-group">
+                    <h:inputSecret rendered="#{!userManager.loggedIn}" class="form-control input-sm" id="password" value="#{userManager.password}" fieldSize="sm" required="true" requiredMessage="Please enter Password!"/>
+                </div> 
+                #{' '}
+                <b:commandButton rendered="#{!userManager.loggedIn}" action="#{userManager.login}" value="#{texts.navbar_sign_in}" look="success" icon="chevron-right" iconAlign="right" id="loginB">
+                	<f:actionListener binding="#{userManager.disableRegisterView()}"/>
+                </b:commandButton>
+                <b:button rendered="#{!userManager.loggedIn and (!userManager.isRegistering)}" outcome="/registration.xhtml" value="#{texts.navbar_sign_up}" look="primary" icon="glyphicon glyphicon-pencil" iconAlign="right"/>
+                <h:outputText rendered="#{userManager.loggedIn}" value="#{texts.navbar_greeting} #{userManager.username}  " style="color:white"></h:outputText>
+                <b:commandButton rendered="#{userManager.loggedIn}" action="#{userManager.logout}" value="#{texts.navbar_log_out}" look="primary"/>
+                <h:messages style="color:red" layout="table" for="username"/>
+                <h:messages style="color:red" layout="table" for="password"/>
+            </h:form>
+        </b:navBar>
+	</ui:composition>
+</body>
+</html>
