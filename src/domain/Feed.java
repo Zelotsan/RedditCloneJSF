@@ -9,7 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -25,10 +27,11 @@ public class Feed {
 	protected List<Post> posts;
 	protected String feedFilename;
 	protected File feedFile;
-	Post post = new Post();
+	Post post;
 	protected String title;
 	protected String link;
 	protected URL url;
+	protected Calendar date;
 	
 	public Post getPost() {
 		return post;
@@ -92,6 +95,7 @@ public class Feed {
 	
 	public void addPost() throws IOException, PostException {
 		if(checkEntries()) {
+			post = new Post();
 			url = new URL(link);
 			post.setLink(url);
 			post.setTitle(title);
@@ -124,4 +128,7 @@ public class Feed {
 		FacesMessage facesMessage = new FacesMessage(message);
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 	}
+	
+	
+	
 }

@@ -49,19 +49,23 @@
 									<ul class="media-list list-group">
 										<ui:repeat var="post" value="#{feed.posts}">
 											<li class="media list-group-item">
-												<div class="pull-left">
-													<h:form>
-														<h:commandLink rendered="#{userManager.loggedIn}" value="">
-														<span class="glyphicon glyphicon-chevron-up"></span>
-														<f:ajax render="posts"></f:ajax>
-														</h:commandLink>
+												<div class="pull-left col-xs-1">
+													<h:form rendered="#{userManager.loggedIn}">
+															<h:commandLink class="pull-left" action="#{post.vote(1)}">
+																<span class="glyphicon glyphicon-chevron-up"></span>
+															</h:commandLink>
+															<div class="clearfix"></div>
+															#{post.vote}
+															<div class="clearfix"></div>
+															<h:commandLink class="pull-left" action="#{post.vote(-1)}">
+																<span class="glyphicon glyphicon-chevron-down"></span>
+															</h:commandLink>
+														
 													</h:form>
 												</div>
-												<a class="pull-left" href="#"><h4>Up</h4></a>
-												<a class="pull-left" href="#"><h4>Down</h4></a>
 												<div class="media-body">
 													<a href="#{post.link}"><h4>#{post.title}</h4></a>
-													submitted #{post.getTimeDifference()}h ago.
+													submitted bla bla bla ago.
 												</div>
 											</li>
 										</ui:repeat>

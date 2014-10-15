@@ -12,9 +12,14 @@ import domain.exception.PostException;
 
 public class Post extends PublishedContent implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private URL link;
 	private List<Comment> comments;
+	private int votes;
 	
 	public Post() {
 		comments = Collections.synchronizedList(new ArrayList<Comment>());
@@ -43,6 +48,12 @@ public class Post extends PublishedContent implements Serializable{
 	public int getCommentCount() {
 		return comments.size();
 	}
+	public int getVotes() {
+		return votes;
+	}
+	public void setVotes(int votes) {
+		this.votes = votes;
+	}
 
 	public boolean checkEntries(String title, String link) throws PostException {
 		if (title == null || title.equals(""))
@@ -50,5 +61,8 @@ public class Post extends PublishedContent implements Serializable{
 		if (link == null)
 			throw new PostException("Please enter a link to post");
 		return true;
+	}
+	public void vote(int i) {
+		vote += i;
 	}
 }

@@ -12,13 +12,19 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import domain.exception.UserException;
-
+@ManagedBean
 public class UserManager implements Serializable {
-	private static final long serialVersionUID = 709188204922858134L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
 	
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
