@@ -12,27 +12,23 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import domain.exception.UserException;
-@ManagedBean
-public class UserManager implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+public class UserManager implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
+	public static String globalUsername;
 	
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
 	protected String userManagerFilename;
 	protected File userManagerFile;
 	private boolean loggedIn = false;
 	protected boolean isRegistering = false;
-	User user = new User();
+	private User user = new User();
 	protected String username;
 	protected String password;
 	
@@ -61,6 +57,7 @@ public class UserManager implements Serializable {
 	
 	public void setUsername(String username) {
 		this.username = username;
+		UserManager.globalUsername = username;
 	}
 	public void setPassword(String password) {
 		this.password = password;
@@ -79,6 +76,14 @@ public class UserManager implements Serializable {
 		this.loggedIn = isLogedIn;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public boolean getIsRegistering() {
 		return isRegistering;
 	}
@@ -125,7 +130,7 @@ public class UserManager implements Serializable {
 				handleException(new UserException(INVALID_CREDENTIALS));
 				invalidateSession();
 		} else {
-			user = users.get(username);
+			setUser(users.get(username));
 			if (user != null && user.checkPassword(password)) {
 				loggedIn = true;	
 			} else {

@@ -18,6 +18,7 @@ public class Post extends PublishedContent implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String title;
 	private URL link;
+	private String username;
 	private List<Comment> comments;
 	private int votes;
 	private Calendar date;
@@ -39,6 +40,12 @@ public class Post extends PublishedContent implements Serializable{
 	}
 	public void setLink(URL link) {
 		this.link = link;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public List<Comment> getComments() {
 		return comments;
