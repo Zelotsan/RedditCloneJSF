@@ -19,7 +19,7 @@
                         <h:panelGroup layout="block" rendered="#{userManager.loggedIn}">
                         	<b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
 		                	<b:modal id="linkModal" title="Submit new link">
-								<h:form><table class="table">
+								<h:form><table class="table borderless">
 									<tbody>
 										<tr>
 											<td>
@@ -41,10 +41,11 @@
 								</table>
 								<b:commandButton value="Submit new link" look="primary" dismiss="modal" action="#{feed.addPost()}"/>
 								<b:button value="Close" dismiss="modal" onclick="return false;"/>
-								
+							
 								</h:form>
 							</b:modal>
 							</h:panelGroup>
+					<p>	
 							<h:panelGroup id="posts">
 									<ul class="media-list list-group">
 										<ui:repeat var="post" value="#{feed.posts}">
@@ -52,6 +53,7 @@
 												<div class="pull-left col-xs-1">
 													<h:form rendered="#{userManager.loggedIn}">
 															<h:commandLink class="pull-left" action="#{post.vote(1)}">
+																<f:actionListener binding="#{feed.save()}" />
 																<span class="glyphicon glyphicon-chevron-up"></span>
 															</h:commandLink>
 															<div class="clearfix"></div>
@@ -72,6 +74,7 @@
 									</ul>
 							<h:messages style="color:red" />
 						</h:panelGroup>
+					</p>
                     </div>
                 </div>
             </div>

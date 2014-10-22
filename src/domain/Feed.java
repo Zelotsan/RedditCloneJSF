@@ -27,7 +27,7 @@ public class Feed {
 	protected List<Post> posts;
 	protected String feedFilename;
 	protected File feedFile;
-	Post post;
+	protected Post post;
 	protected String title;
 	protected String link;
 	protected URL url;
@@ -107,7 +107,7 @@ public class Feed {
 		return Collections.unmodifiableList(posts);
 	}
 
-	private void save() {
+	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(feedFile);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
