@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -104,6 +105,7 @@ public class Feed implements Serializable {
 		}
 	}
 	public List<Post> getPosts() {
+		Collections.sort(posts);
 		return Collections.unmodifiableList(posts);
 	}
 

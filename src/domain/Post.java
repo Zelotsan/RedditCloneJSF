@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 
 import domain.exception.PostException;
 
-public class Post extends PublishedContent implements Serializable{
+public class Post extends PublishedContent implements Serializable, Comparable<Post> {
 	
 	/**
 	 * 
@@ -100,5 +100,19 @@ public class Post extends PublishedContent implements Serializable{
 			return (current.get(Calendar.SECOND) - date.get(Calendar.SECOND)) + " seconds ago";
 		
 		return "just now";
+	}
+
+	@Override
+	public int compareTo(Post p) {
+		if(this.votes > p.getVotes()) {
+			return -1;
+		}
+		if(this.votes == p.getVotes()) {
+			return 0;
+		}
+		if(this.votes < p.getVotes()) {
+			return 1;
+		}
+		return this.compareTo(p);
 	}
 }
