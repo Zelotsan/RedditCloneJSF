@@ -11,11 +11,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -27,7 +24,7 @@ public class Feed {
 	protected List<Post> posts;
 	protected String feedFilename;
 	protected File feedFile;
-	protected Post post;
+	private Post post;
 	protected String title;
 	protected String link;
 	protected URL url;
@@ -99,6 +96,8 @@ public class Feed {
 			url = new URL(link);
 			post.setLink(url);
 			post.setTitle(title);
+			post.setUsername(UserManager.globalUsername);
+			
 			posts.add(post);
 			save();
 		}
@@ -107,7 +106,7 @@ public class Feed {
 		return Collections.unmodifiableList(posts);
 	}
 
-	public void save() {
+	private void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(feedFile);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -128,7 +127,4 @@ public class Feed {
 		FacesMessage facesMessage = new FacesMessage(message);
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 	}
-	
-	
-	
 }

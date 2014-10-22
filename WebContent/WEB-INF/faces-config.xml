@@ -14,4 +14,19 @@
 		<managed-bean-class>domain.Feed</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	
+	<application>
+		<locale-config>
+			<default-locale>en</default-locale>
+	    	<supported-locale>de</supported-locale>
+	    	<supported-locale>de_CH</supported-locale>
+		</locale-config>
+		<message-bundle>
+			locale.message
+		</message-bundle>
+		<resource-bundle>
+			<base-name>locale.texts</base-name>
+			<var>texts</var>
+		</resource-bundle>
+	</application>
 </faces-config>
