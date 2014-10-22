@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
+
 import domain.exception.PostException;
 
 public class Post extends PublishedContent implements Serializable{
@@ -22,6 +25,7 @@ public class Post extends PublishedContent implements Serializable{
 	private List<Comment> comments;
 	private int votes;
 	private Calendar date;
+
 	
 	public Post() {
 		comments = Collections.synchronizedList(new ArrayList<Comment>());
@@ -70,8 +74,10 @@ public class Post extends PublishedContent implements Serializable{
 			throw new PostException("Please enter a link to post");
 		return true;
 	}
+	
+	
 	public void vote(int i) {
-		vote += i;
+		votes += i;
 	}
 	
 	public String getTimeDifference() {

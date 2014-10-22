@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,7 +21,8 @@ import javax.faces.context.FacesContext;
 import domain.exception.PostException;
 
 
-public class Feed {
+public class Feed implements Serializable {
+	private static final long serialVersionUID = 1L;
 	protected List<Post> posts;
 	protected String feedFilename;
 	protected File feedFile;
@@ -54,7 +56,6 @@ public class Feed {
 		this.link = link;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Feed() {
 		posts = Collections.synchronizedList(new ArrayList<Post>());
 		
@@ -106,7 +107,7 @@ public class Feed {
 		return Collections.unmodifiableList(posts);
 	}
 
-	private void save() {
+	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(feedFile);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -128,3 +129,5 @@ public class Feed {
 		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 	}
 }
+
+

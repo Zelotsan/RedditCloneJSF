@@ -51,15 +51,16 @@
 										<ui:repeat var="post" value="#{feed.posts}">
 											<li class="media list-group-item">
 												<div class="pull-left col-xs-1">
-													<h:form rendered="#{userManager.loggedIn}">
-															<h:commandLink class="pull-left" action="#{post.vote(1)}">
-																<f:actionListener binding="#{feed.save()}" />
+													<h:form>
+															<h:commandLink rendered="#{userManager.loggedIn}" class="pull-left" action="#{feed.save()}">
+																<f:actionListener binding="#{post.vote(1)}" />
 																<span class="glyphicon glyphicon-chevron-up"></span>
 															</h:commandLink>
 															<div class="clearfix"></div>
-															#{post.vote}
+															#{post.votes}
 															<div class="clearfix"></div>
-															<h:commandLink class="pull-left" action="#{post.vote(-1)}">
+															<h:commandLink rendered="#{userManager.loggedIn}" class="pull-left" action="#{feed.save()}">
+																<f:actionListener binding="#{post.vote(-1)}" />
 																<span class="glyphicon glyphicon-chevron-down"></span>
 															</h:commandLink>
 														
