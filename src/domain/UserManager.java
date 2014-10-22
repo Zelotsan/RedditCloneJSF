@@ -97,7 +97,7 @@ public class UserManager implements Serializable {
 		setIsRegistering(false);
 	}
 
-	public void register() {
+	public String register() {
 		if (validateCredentials()) {
 			handleException(new UserException(INVALID_CREDENTIALS));
 		} else if (users.containsKey(username)) {
@@ -109,7 +109,9 @@ public class UserManager implements Serializable {
 			save();
 			login();
 			disableRegisterView();
+			return "index.xhtml";
 		}
+		return null;
 	}
 	private boolean validateCredentials() {
 		return username == null || password == null || username == "" || password == "";
