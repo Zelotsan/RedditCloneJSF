@@ -27,6 +27,14 @@
 									<h:inputSecret id="rPassword" type="password" class="form-control input-sm" value="#{userManager.password}" required="true" requiredMessage="Please enter Password!"></h:inputSecret>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<h:outputText value="#{texts.register_password_confirm}: "></h:outputText>
+								</div>
+								<div class="col-md-4">
+									<h:inputSecret id="rPasswordConfirm" type="password" class="form-control input-sm" value="#{userManager.passwordConfirm}" required="true" requiredMessage="Please enter Password confirmation!"></h:inputSecret>
+								</div>
+							</div>
 							
 							<b:commandButton value="#{texts.register_submit}" id="register" action="#{userManager.register}" look="success"></b:commandButton> 
 							<b:commandButton value="#{texts.register_cancel}" id="cancel" look="danger" type="reset"></b:commandButton>		
@@ -36,6 +44,7 @@
 				</h:panelGroup>
 				<h:messages style="color:red" layout="table" for="rUsername"/>
                 <h:messages style="color:red" layout="table" for="rPassword"/>
+                <h:messages style="color:red" layout="table" for="rPasswordConfirm"/>
         </ui:define>
     </ui:composition>
 </h:body>
