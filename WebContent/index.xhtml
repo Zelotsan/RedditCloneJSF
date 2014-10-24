@@ -20,8 +20,9 @@
                         <h:panelGroup layout="block" rendered="#{userManager.loggedIn}">
                         	<b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
 		                	<b:modal id="linkModal" title="Submit new link">
+<<<<<<< HEAD
 								<h:form>
-									<table class="table">
+									<table class="table borderless">
 										<tbody>
 											<tr>
 												<td>
@@ -41,11 +42,12 @@
 											</tr>
 										</tbody>
 									</table>
-									<b:commandButton value="Submit new link" look="primary" dismiss="modal" action="#{feed.addPost()}"/>
-									<b:button value="Close" dismiss="modal" onclick="return false;"/>
+									<b:commandButton value="Submit new link" look="primary" dismiss="modal" action="#{feed.addPost()}" />
+									<b:button value="Close" dismiss="modal" onclick="return false;" />						
 								</h:form>
 							</b:modal>
 						</h:panelGroup>
+						<p>	
 						<h:panelGroup layout="block" id="posts">
 							<ul class="media-list list-group">
 								<ui:repeat var="post" value="#{feed.posts}">
@@ -54,14 +56,14 @@
 											<h:form rendered="#{userManager.loggedIn}">
 													<h:commandLink class="pull-left" action="#{post.vote(1)}">
 														<span class="glyphicon glyphicon-chevron-up"></span>
-															<f:ajax render="post-vote" />
+															<f:ajax render="post-votes" />
 													</h:commandLink>
 													<div class="clearfix"></div>
-													<h:outputLabel id="post-vote">#{post.vote}</h:outputLabel>
+													<h:outputLabel id="post-votes">#{post.votes}</h:outputLabel>
 													<div class="clearfix"></div>
 													<h:commandLink class="pull-left" action="#{post.vote(-1)}">
 														<span class="glyphicon glyphicon-chevron-down"></span>
-															<f:ajax render="post-vote" />
+															<f:ajax render="post-votes" />
 													</h:commandLink>
 											</h:form>
 										</div>
@@ -89,14 +91,14 @@
 																	<h:form rendered="#{userManager.loggedIn}">
 																			<h:commandLink class="pull-left" action="#{comment.vote(1)}">
 																				<span class="glyphicon glyphicon-chevron-up"></span>
-																				<f:ajax render="comment-vote" />
+																				<f:ajax render="comment-votes" />
 																			</h:commandLink>
 																			<div class="clearfix"></div>
-																			<h:outputLabel id="comment-vote">#{comment.vote}</h:outputLabel>
+																			<h:outputLabel id="comment-votes">#{comment.vote}</h:outputLabel>
 																			<div class="clearfix"></div>
 																			<h:commandLink class="pull-left" action="#{comment.vote(-1)}">
 																				<span class="glyphicon glyphicon-chevron-down"></span>
-																				<f:ajax render="comment-vote" />
+																				<f:ajax render="comment-votes" />
 																			</h:commandLink>
 																	</h:form>
 																</div>
@@ -118,6 +120,7 @@
 								</ui:repeat>
 							</ul>
 						</h:panelGroup>
+					</p>
                     </div>
                 </div>
             </div>

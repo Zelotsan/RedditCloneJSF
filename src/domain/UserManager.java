@@ -18,6 +18,7 @@ import domain.exception.UserException;
 
 public class UserManager {
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
+	private final static String CONFIRMATION_FAIL = "Password don't match!";
 	public static String globalUsername;
 	
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
@@ -30,6 +31,7 @@ public class UserManager {
 	private User user = new User();
 	protected String username;
 	protected String password;
+	protected String passwordConfirm;
 	
 	@SuppressWarnings("unchecked")
 	public UserManager() {
@@ -95,23 +97,41 @@ public class UserManager {
 	public void disableRegisterView() {
 		setIsRegistering(false);
 	}
+	
 
-	public void register() {
-		if (validateCredentials()) {
-			handleException(new UserException(INVALID_CREDENTIALS));
-		} else if (users.containsKey(username)) {
-				handleException(new UserException("Username already exists. Choose a different one!"));
-		} else {
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	public String register() {
+		if(validateCredentialsRegistry()) {
 			user.setUsername(this.username);
 			user.setPassword(this.password);
 			users.put(user.getUsername(), user);
 			save();
 			login();
 			disableRegisterView();
+			return "index.xhtml";
 		}
+		return null;
 	}
 	private boolean validateCredentials() {
 		return username == null || password == null || username == "" || password == "";
+	}
+	private boolean validateCredentialsRegistry() {
+		if(!password.equals(passwordConfirm)) {
+			handleException(new UserException(CONFIRMATION_FAIL));
+			return false;
+		}
+		if (users.containsKey(username)) {
+			handleException(new UserException("Username already exists. Choose a different one!"));
+			return false;
+		}
+		return true;
 	}
 
 	private void handleException(UserException e) {

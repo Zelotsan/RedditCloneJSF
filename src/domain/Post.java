@@ -10,7 +10,7 @@ import java.util.List;
 
 import domain.exception.PostException;
 
-public class Post extends PublishedContent implements Serializable {
+public class Post extends PublishedContent implements Serializable, Comparable<Post> {
 	private static final long serialVersionUID = -4181480191577090382L;
 	
 	private String title;
@@ -87,6 +87,18 @@ public class Post extends PublishedContent implements Serializable {
 			new PostException("Creator could not be assigned").handleExcpetion();
 		return true;
 	}
-	
-	
+
+	@Override
+	public int compareTo(Post p) {
+		if(this.votes > p.getVotes()) {
+			return -1;
+		}
+		if(this.votes == p.getVotes()) {
+			return 0;
+		}
+		if(this.votes < p.getVotes()) {
+			return 1;
+		}
+		return this.compareTo(p);
+	}
 }

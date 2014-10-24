@@ -79,6 +79,7 @@ public class Feed implements Serializable {
 		this.link = link;
 	}
 	public List<Post> getPosts() {
+		Collections.sort(posts);
 		return Collections.unmodifiableList(posts);
 	}
 
@@ -121,3 +122,5 @@ public class Feed implements Serializable {
 		}
 	}
 }
+
+

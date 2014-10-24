@@ -9,14 +9,14 @@ public abstract class PublishedContent implements Serializable {
 	
 	protected static Feed contentChangedListener;
 	
-	protected int vote;
+	protected int votes;
 	protected Calendar date;
 	
-	public int getVote() {
-		return vote;
+	public int getVotes() {
+		return votes;
 	}
 	public void vote(int i) {
-		vote += i;
+		votes += i;
 		contentChangedListener.contentChanged();
 	}
 
