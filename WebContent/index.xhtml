@@ -9,7 +9,7 @@
 <h:body>
     <ui:composition template="/template/layout.xhtml">
         <ui:define name="content">
-            <div class="page-header" id="banner">
+            <div class="page-header">
                 <div class="row">
                     <div class="col-xs-12">
                         <h1>Herzlich willkommen bei RedditClone</h1>
@@ -55,14 +55,14 @@
 											<h:form>
 													<h:commandLink class="pull-left" action="#{post.vote(1)}" rendered="#{userManager.loggedIn}">
 														<span class="glyphicon glyphicon-chevron-up"></span>
-															<f:ajax render="post-votes" />
+														<f:ajax render=":posts" />
 													</h:commandLink>
 													<div class="clearfix"></div>
 													<h:outputLabel id="post-votes">#{post.votes}</h:outputLabel>
 													<div class="clearfix"></div>
 													<h:commandLink class="pull-left" action="#{post.vote(-1)}" rendered="#{userManager.loggedIn}">
 														<span class="glyphicon glyphicon-chevron-down"></span>
-															<f:ajax render="post-votes" />
+														<f:ajax render=":posts" />
 													</h:commandLink>
 											</h:form>
 										</div>
