@@ -8,27 +8,22 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.bean.ManagedProperty;
-import javax.faces.context.FacesContext;
-
 import domain.exception.PostException;
 
 public class Post extends PublishedContent implements Serializable, Comparable<Post> {
+	private static final long serialVersionUID = -4181480191577090382L;
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private String title;
 	private URL link;
 	private String username;
 	private List<Comment> comments;
-	private int votes;
-	private Calendar date;
-
+	
+	private transient boolean commentsShown = false;
+	private transient String comment;
 	
 	public Post() {
 		comments = Collections.synchronizedList(new ArrayList<Comment>());
+		
 		date = Calendar.getInstance();		
 		date.setTime(new Date());
 	}
@@ -52,54 +47,45 @@ public class Post extends PublishedContent implements Serializable, Comparable<P
 		this.username = username;
 	}
 	public List<Comment> getComments() {
-		return comments;
+		return Collections.unmodifiableList(comments);
 	}
-	public void addComment(Comment comment) {
-		comments.add(comment);
+	public void addComment() throws PostException {
+		String creator = UserManager.globalUsername;
+		if (checkEntries(this.comment, creator)) {
+			Comment comment = new Comment(this.comment, UserManager.globalUsername);
+			comments.add(comment);
+			contentChangedListener.contentChanged();
+		}
+	}
+	public boolean hasComments() {
+		return comments.size() != 0;
 	}
 	public int getCommentCount() {
 		return comments.size();
 	}
-	public int getVotes() {
-		return votes;
+	public boolean getCommentsShown() {
+		return commentsShown;
 	}
-	public void setVotes(int votes) {
-		this.votes = votes;
+	public void setCommentsShown(boolean commentsShown) {
+		this.commentsShown = commentsShown;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
-	public boolean checkEntries(String title, String link) throws PostException {
-		if (title == null || title.equals(""))
-			throw new PostException("Please enter a describing title for your link");
-		if (link == null)
-			throw new PostException("Please enter a link to post");
+	public void toggleCommentsShown() {
+		commentsShown = !commentsShown;
+	}
+
+	public boolean checkEntries(String comment, String creator) {
+		if (comment == null || comment.equals(""))
+			new PostException("Please write something").handleExcpetion();
+		if (creator == null || creator.equals(""))
+			new PostException("Creator could not be assigned").handleExcpetion();
 		return true;
-	}
-	
-	
-	public void vote(int i) {
-		votes += i;
-	}
-	
-	public String getTimeDifference() {
-		Calendar current = Calendar.getInstance();
-		current.setTime(new Date());
-
-		if (current.get(Calendar.YEAR) > date.get(Calendar.YEAR))
-			return (current.get(Calendar.YEAR) - date.get(Calendar.YEAR)) + " years ago";
-		if (current.get(Calendar.MONTH) > date.get(Calendar.MONTH))
-			return (current.get(Calendar.MONTH) - date.get(Calendar.MONTH)) + " months ago";
-		if (current.get(Calendar.WEEK_OF_MONTH) > date.get(Calendar.WEEK_OF_MONTH))
-			return (current.get(Calendar.WEEK_OF_MONTH) - date.get(Calendar.WEEK_OF_MONTH)) + " weeks ago";
-		if (current.get(Calendar.DAY_OF_WEEK) > date.get(Calendar.DAY_OF_WEEK))
-			return (current.get(Calendar.DAY_OF_WEEK) - date.get(Calendar.DAY_OF_WEEK)) + " days ago";
-		if (current.get(Calendar.HOUR) > date.get(Calendar.HOUR))
-			return (current.get(Calendar.HOUR) - date.get(Calendar.HOUR)) + " hours ago";
-		if (current.get(Calendar.MINUTE) > date.get(Calendar.MINUTE))
-			return (current.get(Calendar.MINUTE) - date.get(Calendar.MINUTE)) + " minutes ago";
-		if (current.get(Calendar.SECOND) > date.get(Calendar.SECOND))
-			return (current.get(Calendar.SECOND) - date.get(Calendar.SECOND)) + " seconds ago";
-		
-		return "just now";
 	}
 
 	@Override

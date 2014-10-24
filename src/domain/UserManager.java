@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Properties;
 
@@ -17,16 +16,16 @@ import javax.servlet.http.HttpSession;
 
 import domain.exception.UserException;
 
-public class UserManager implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class UserManager {
 	private final static String INVALID_CREDENTIALS = "Username and/or password is invalid!";
 	private final static String CONFIRMATION_FAIL = "Password don't match!";
 	public static String globalUsername;
 	
 	protected Hashtable<String, User> users = new Hashtable<String, User>();
+	
 	protected String userManagerFilename;
 	protected File userManagerFile;
+	
 	private boolean loggedIn = false;
 	protected boolean isRegistering = false;
 	private User user = new User();

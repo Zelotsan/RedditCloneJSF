@@ -16,63 +16,108 @@
                         <p>
                         	The community is waiting for it!
                         </p>
+						<h:messages style="color:red" />
                         <h:panelGroup layout="block" rendered="#{userManager.loggedIn}">
                         	<b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
 		                	<b:modal id="linkModal" title="Submit new link">
-								<h:form><table class="table borderless">
-									<tbody>
-										<tr>
-											<td>
-												<h:outputText value="Titel: "></h:outputText>
-											</td>
-											<td>
-												<b:inputText placeholder="Titel.." id="mtitle"  fieldSize="sm" value="#{feed.title}"/>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<h:outputText value="Link: "></h:outputText>
-											</td>
-											<td>
-												<b:inputText placeholder="http://www.beispiel.ch" id="mlink" fieldSize="sm" value="#{feed.link}"/>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<b:commandButton value="Submit new link" look="primary" dismiss="modal" action="#{feed.addPost()}"/>
-								<b:button value="Close" dismiss="modal" onclick="return false;"/>
-							
+								<h:form>
+									<table class="table borderless">
+										<tbody>
+											<tr>
+												<td>
+													<h:outputText value="Titel: "></h:outputText>
+												</td>
+												<td>
+													<b:inputText placeholder="Titel.." id="mtitle"  fieldSize="sm" value="#{feed.title}"/>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="Link: "></h:outputText>
+												</td>
+												<td>
+													<b:inputText placeholder="http://www.beispiel.ch" id="mlink" fieldSize="sm" value="#{feed.link}"/>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<b:commandButton value="Submit new link" look="primary" dismiss="modal" action="#{feed.addPost()}" />
+									<b:button value="Close" dismiss="modal" onclick="return false;" />						
 								</h:form>
 							</b:modal>
-							</h:panelGroup>
-					<p>	
-							<h:panelGroup id="posts">
-									<ul class="media-list list-group">
-										<ui:repeat var="post" value="#{feed.posts}">
-											<li class="media list-group-item">
-												<div class="pull-left col-xs-1">
+						</h:panelGroup>
+						<p>	
+						<h:panelGroup layout="block" id="posts">
+							<ul class="media-list list-group">
+								<ui:repeat var="post" value="#{feed.posts}">
+									<li class="media list-group-item">
+										<div class="pull-left col-xs-1">
+											<h:form rendered="#{userManager.loggedIn}">
+													<h:commandLink class="pull-left" action="#{post.vote(1)}">
+														<span class="glyphicon glyphicon-chevron-up"></span>
+															<f:ajax render="post-votes" />
+													</h:commandLink>
+													<div class="clearfix"></div>
+													<h:outputLabel id="post-votes">#{post.votes}</h:outputLabel>
+													<div class="clearfix"></div>
+													<h:commandLink class="pull-left" action="#{post.vote(-1)}">
+														<span class="glyphicon glyphicon-chevron-down"></span>
+															<f:ajax render="post-votes" />
+													</h:commandLink>
+											</h:form>
+										</div>
+										<div class="media-body">
+											<a href="#{post.link}"><h4>#{post.title}</h4></a>
+											submitted #{post.getTimeDifference()} by #{post.username}.
+											<h:form>
+												<div>
+													<b:commandButton value="#{post.getCommentCount()} Comments" action="#{post.toggleCommentsShown()}" look="info" />
+												</div>
+											</h:form>
+											<b:panel id="commenting" look="primary" rendered="#{post.commentsShown}">
+												<h:panelGroup layout="block" rendered="#{userManager.loggedIn}">
 													<h:form>
-															<h:commandLink rendered="#{userManager.loggedIn}" class="pull-left" action="#{feed.save()}">
-																<f:actionListener binding="#{post.vote(1)}" />
-																<span class="glyphicon glyphicon-chevron-up"></span>
-															</h:commandLink>
-															<div class="clearfix"></div>
-															#{post.votes}
-															<div class="clearfix"></div>
-															<h:commandLink rendered="#{userManager.loggedIn}" class="pull-left" action="#{feed.save()}">
-																<f:actionListener binding="#{post.vote(-1)}" />
-																<span class="glyphicon glyphicon-chevron-down"></span>
-															</h:commandLink>
+														<h:inputTextarea class="form-control" value="#{post.comment}" />
+														<b:commandButton value="Post comment" look="primary" action="#{post.addComment()}" />
 													</h:form>
-												</div>
-												<div class="media-body">
-													<a href="#{post.link}" target="_blank"><h4>#{post.title}</h4></a>
-													submitted #{post.getTimeDifference()} by #{post.username}.
-												</div>
-											</li>
-										</ui:repeat>
-									</ul>
-							<h:messages style="color:red" />
+													<br /> <br />
+												</h:panelGroup>
+												<h:panelGroup id="comments" layout="block" rendered="#{post.commentsShown}">
+													<ul class="media-list list-group">
+														<ui:repeat id="comments-list" var="comment" value="#{post.comments}">
+															<li class="media list-group-item">
+																<div class="pull-left col-xs-1">
+																	<h:form rendered="#{userManager.loggedIn}">
+																			<h:commandLink class="pull-left" action="#{comment.vote(1)}">
+																				<span class="glyphicon glyphicon-chevron-up"></span>
+																				<f:ajax render="comment-votes" />
+																			</h:commandLink>
+																			<div class="clearfix"></div>
+																			<h:outputLabel id="comment-votes">#{comment.votes}</h:outputLabel>
+																			<div class="clearfix"></div>
+																			<h:commandLink class="pull-left" action="#{comment.vote(-1)}">
+																				<span class="glyphicon glyphicon-chevron-down"></span>
+																				<f:ajax render="comment-votes" />
+																			</h:commandLink>
+																	</h:form>
+																</div>
+																<div class="media-body">
+																	<div>
+																		#{comment.creator} #{comment.getTimeDifference()}
+																	</div>
+																	<div>
+																		#{comment.text}
+																	</div>
+																</div>
+															</li>	
+														</ui:repeat>
+													</ul>	
+												</h:panelGroup>
+											</b:panel>
+										</div>												
+									</li>
+								</ui:repeat>
+							</ul>
 						</h:panelGroup>
 					</p>
                     </div>
