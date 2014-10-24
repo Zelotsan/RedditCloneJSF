@@ -20,7 +20,6 @@
                         <h:panelGroup layout="block" rendered="#{userManager.loggedIn}">
                         	<b:button value="Submit new Link" look="success" p:data-target="#linkModal" p:data-toggle="modal" onclick="return false;" size="sm"/>
 		                	<b:modal id="linkModal" title="Submit new link">
-<<<<<<< HEAD
 								<h:form>
 									<table class="table borderless">
 										<tbody>
@@ -94,7 +93,7 @@
 																				<f:ajax render="comment-votes" />
 																			</h:commandLink>
 																			<div class="clearfix"></div>
-																			<h:outputLabel id="comment-votes">#{comment.vote}</h:outputLabel>
+																			<h:outputLabel id="comment-votes">#{comment.votes}</h:outputLabel>
 																			<div class="clearfix"></div>
 																			<h:commandLink class="pull-left" action="#{comment.vote(-1)}">
 																				<span class="glyphicon glyphicon-chevron-down"></span>
