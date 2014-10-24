@@ -6,11 +6,8 @@ import domain.exception.UserException;
 
 
 public class User implements Serializable {
+	private static final long serialVersionUID = -6114001634652383731L;
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
 	

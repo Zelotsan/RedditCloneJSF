@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,45 +15,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import domain.exception.PostException;
 
 
-public class Feed {
+public class Feed implements Serializable {
+	private static final long serialVersionUID = 886230688789652010L;
+
 	protected List<Post> posts;
+	
 	protected String feedFilename;
 	protected File feedFile;
+	
 	private Post post;
 	protected String title;
 	protected String link;
 	protected URL url;
 	protected Calendar date;
-	
-	public Post getPost() {
-		return post;
-	}
-
-	public void setPost(Post post) {
-		this.post = post;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
 
 	@SuppressWarnings("unchecked")
 	public Feed() {
@@ -78,19 +56,34 @@ public class Feed {
 				e.printStackTrace();
 			}
 		}
+		
+		PublishedContent.setContentChangedListener(this);
 	}
 	
-	private boolean checkEntries() {
-		if (title == null || title.equals(""))
-			handleException(new PostException("Please enter a describing title for your link"));
-		else if (link == null)
-			handleException(new PostException("Please enter a link to post"));
-		else
-			return true;
-		return false;
+	public Post getPost() {
+		return post;
 	}
+	public void setPost(Post post) {
+		this.post = post;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public List<Post> getPosts() {
+		return Collections.unmodifiableList(posts);
+	}
+
 	
-	public void addPost() throws IOException, PostException {
+	public void addPost() throws IOException {
 		if(checkEntries()) {
 			post = new Post();
 			url = new URL(link);
@@ -102,10 +95,20 @@ public class Feed {
 			save();
 		}
 	}
-	public List<Post> getPosts() {
-		return Collections.unmodifiableList(posts);
+	
+	public void contentChanged() {
+		save();
 	}
 
+	private boolean checkEntries() {
+		if (title == null || title.equals(""))
+			new PostException("Please enter a describing title for your link").handleExcpetion();
+		else if (link == null)
+			new PostException("Please enter a link to post").handleExcpetion();
+		else
+			return true;
+		return false;
+	}
 	private void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(feedFile);
@@ -116,15 +119,5 @@ public class Feed {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	private void handleException(PostException e) {
-		String message="";
-		if (e instanceof PostException){
-		message = e.getMessage();
-		} else {
-			message = "An unexpected error occured !";
-		}
-		FacesMessage facesMessage = new FacesMessage(message);
-		FacesContext.getCurrentInstance().addMessage(null,  facesMessage);
 	}
 }
