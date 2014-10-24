@@ -52,15 +52,15 @@
 								<ui:repeat var="post" value="#{feed.posts}">
 									<li class="media list-group-item">
 										<div class="pull-left col-xs-1">
-											<h:form rendered="#{userManager.loggedIn}">
-													<h:commandLink class="pull-left" action="#{post.vote(1)}">
+											<h:form>
+													<h:commandLink class="pull-left" action="#{post.vote(1)}" rendered="#{userManager.loggedIn}">
 														<span class="glyphicon glyphicon-chevron-up"></span>
 															<f:ajax render="post-votes" />
 													</h:commandLink>
 													<div class="clearfix"></div>
 													<h:outputLabel id="post-votes">#{post.votes}</h:outputLabel>
 													<div class="clearfix"></div>
-													<h:commandLink class="pull-left" action="#{post.vote(-1)}">
+													<h:commandLink class="pull-left" action="#{post.vote(-1)}" rendered="#{userManager.loggedIn}">
 														<span class="glyphicon glyphicon-chevron-down"></span>
 															<f:ajax render="post-votes" />
 													</h:commandLink>
@@ -87,15 +87,15 @@
 														<ui:repeat id="comments-list" var="comment" value="#{post.comments}">
 															<li class="media list-group-item">
 																<div class="pull-left col-xs-1">
-																	<h:form rendered="#{userManager.loggedIn}">
-																			<h:commandLink class="pull-left" action="#{comment.vote(1)}">
+																	<h:form>
+																			<h:commandLink class="pull-left" action="#{comment.vote(1)}" rendered="#{userManager.loggedIn}">
 																				<span class="glyphicon glyphicon-chevron-up"></span>
 																				<f:ajax render="comment-votes" />
 																			</h:commandLink>
 																			<div class="clearfix"></div>
 																			<h:outputLabel id="comment-votes">#{comment.votes}</h:outputLabel>
 																			<div class="clearfix"></div>
-																			<h:commandLink class="pull-left" action="#{comment.vote(-1)}">
+																			<h:commandLink class="pull-left" action="#{comment.vote(-1)}" rendered="#{userManager.loggedIn}">
 																				<span class="glyphicon glyphicon-chevron-down"></span>
 																				<f:ajax render="comment-votes" />
 																			</h:commandLink>
